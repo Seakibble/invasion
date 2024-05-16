@@ -3,17 +3,68 @@ body {
     color: rgb(107, 40, 9);
     font-family: 'Crimson Pro', 'Times New Roman', Times, serif;
     font-size: 24px;
-    padding: 40px;
+    padding: 20px 40px;
     overflow: hidden;
+}
+.endscreen, .welcome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    color: rgb(220, 157, 102);
+    background: #080000;
+    z-index: 50;
+    box-sizing: border-box;
+    opacity: 1;
+    transition: opacity 1s;
+    padding: 50px;
+    display: grid;
+    place-content: center;
+}
+.endscreen {
+    z-index: 100;
+    display: none;
+}
+.endscreen > div {    
+    padding: 50px;
+}
+.endscreen h2 {
+    font-size: 4em;
+}
+#slide2, #slide3, #slide4, #slide5 {
+    display: none;
+}
+
+.welcome__box {
+    background: #211;
+    border-left: 4px solid firebrick;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 1000px;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.hide {
+    opacity: 0;
 }
 
 .container {
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-row-gap: 50px;
+    grid-row-gap: 25px;
     grid-template-areas: 
      "time time"
      "sidebar events";
+}
+
+.welcome p {
+    font-size: 1.1em;
+    color: rgb(220, 157, 102);
+}
+.welcome b {
+    color: lightgoldenrodyellow;
 }
 
 h1 {
@@ -35,6 +86,14 @@ br {
 
 p {
     margin-bottom: 0.5em;
+}
+
+ul {
+    margin-bottom: 0.5em;
+}
+li {
+    margin-left: 1em;
+    margin-bottom: 0.25em;
 }
 
 b {
@@ -64,13 +123,20 @@ button:hover {
     cursor: pointer;
 }
 
-.endTurn {
+.endTurn, .spend, .action {
     background: firebrick;
     border: 3px solid #411;
     border-radius: 10px;
     text-align: center;
     padding: 5px;
 }
+
+ .spend, .action {
+    display: inline;
+    width: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+ }
 
 
 .icon {
@@ -192,7 +258,7 @@ button:hover {
 }
 
 .flip {
-    animation: flip 1s ease-in-out;
+    animation: flip 0.4s ease-in-out;
 }
 
 
@@ -238,13 +304,22 @@ button:hover {
 }
 
 .cardBox {
-    --hue: 40;
+    --hue: 30;
+}
+.rift {
+    --hue: 200;
+}
+.dragon {
+    --hue: 130;
 }
 .crisis {
     --hue: 350;
 }
 .opportunity {
-    --hue: 210;
+    --hue: 230;
+}
+.opportunity .choiceText {
+    color: hsl(var(--hue), 100%, 95%);
 }
 .battle {
     --hue: 290;
@@ -313,6 +388,13 @@ button:hover {
     background: hsl(var(--hue), 75%, 80%);
 
     padding: 2px 10px;    
+    transition: border 0.15s;
+}
+
+.outcome:hover {
+    background-color: white;
+    color: black;
+    border-left: 20px solid white;
 }
 
 .plain {
@@ -348,7 +430,7 @@ button:hover {
 .stats {
     display:grid;
     /* grid-auto-flow: column; */
-    /* grid-template-columns: repeat(7, auto); */
+    /* grid-template-columns: 1fr auto; */
     justify-content: center;
     align-content: start;
     align-self: start;
@@ -356,30 +438,62 @@ button:hover {
     color: lightgoldenrodyellow;
     /* position:absolute;
     bottom: 20px; */
-    font-size: 1.2em;
+    font-size: 1.1em;
     background: #211;
     border-radius: 10px;
     box-shadow: -2px 3px rgba(102, 17, 17, 0.359);
 }
 .stat {
-    border-bottom: 2px solid rgba(255, 145, 0, 0.063);
+    border-top: 2px solid rgba(255, 145, 0, 0.063);
     display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 20px 120px 20px;
-    grid-column-gap: 20px;
+    /* grid-auto-flow: row; */
+    grid-template-columns: 20px 140px 20px;
+    grid-column-gap: 15px;
     align-items: center;
     padding: 10px 20px;
     position: relative;
 }
-.stat:last-child {
+.stat.heading:first-child {
+    margin: 0;
     border: none;
+    font-size: 1.1em;
+    color: antiquewhite;
+    text-align: center;
 }
 .stat.heading {
+    text-align: left;
+    font-size: 0.9em;
     font-weight: bold;
     display: block;
-    text-align: center;
-    color: antiquewhite;
+    
+    color: firebrick;
+    margin-top: 0.15em;
+    border: none;
+    
 }
+
+.alliesList {
+    grid-column: 2 / span 2;
+    font-size: 0.75em;
+}
+
+.alliesList li {
+    margin-left: 0.25em;
+    padding: 0.25em 0 0;
+    animation: allyIn 2s;
+}
+
+@keyframes allyIn {
+    0% {
+        font-size: 0em;
+        opacity: 0;
+    }
+    50% {
+        font-size: 1em;
+        opacity: 0;
+    }
+}
+
 .seperator {
     display:block;
     margin: 0 auto;
@@ -391,6 +505,7 @@ button:hover {
     border-bottom-right-radius: 2px;
 }
 .number {
+    font-size: 1.1em;
     max-width: 24px;
     max-height: 24px;
     overflow: visible;
@@ -404,16 +519,81 @@ button:hover {
     color: greenyellow;
 }
 .number.medium {
-    color: gold;
+    color: greenyellow;
 }
 .number.low {
-    color: orangered;
+    color: gold;
 }
 .number.critical {
-    color: crimson;
+    color: red;
 }
 .number.failed {
-    color: purple;
+    color: magenta;
+}
+
+.danger {
+    background: #500;
+    color: red;
+    animation: dangerPulse 2s ease-in-out alternate-reverse infinite;
+}
+
+.dangerBig {
+    background: #505;
+    color: magenta;
+    animation: dangerBigPulse 1.2s ease-in-out alternate-reverse infinite;
+}
+
+.toolTip {
+    display: none;
+}
+:hover > .toolTip {
+    font-size: 0.75em;
+    display: block;
+    position: absolute;
+    width: 300px;
+    right: -310px;
+    padding-left: 10px;
+
+    z-index: 15;
+}
+.toolTip > div {
+    color: lightgoldenrodyellow;
+    background: #211;
+    border-left: 4px solid firebrick;
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    grid-gap: 10px;
+    justify-items: center;
+}
+
+.toolTip p {
+    color: magenta;
+    padding-top: 10px;
+}
+
+.toolTip p:first-child {
+    color: red;
+    padding-top: 10px;
+}
+
+
+@keyframes dangerPulse {
+    from {
+        background: #300;
+    }
+    to {
+        background: #200;
+    }
+}
+@keyframes dangerBigPulse {
+    from {
+        background: #303;
+    }
+
+    to {
+        background: #202;
+    }
 }
 
 @keyframes pop {
@@ -440,19 +620,39 @@ button:hover {
 }
 
 .timeBarInner {
+    --phase: crimson;
     position:absolute;
     left: 0;
-    width: 0%;
+    width: 10px;
     height: 100%;
-    background: crimson;
-    border-right: 4px solid crimson;
+    background: var(--phase);
+    border-right: 4px solid var(--phase);
     /* mix-blend-mode: overlay; */
     box-sizing: border-box;
     z-index: 2;
-    transition: width 2s;
-    transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    transition: width 2s, background 1s, border 1s;
+    /* transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95); */
+    transition-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
+}
+
+#timeBar {
+    --phase: beige;
+}
+
+.phase2 #timeBar {
+    --phase: goldenrod;
+}
+.phase3 #timeBar {
+    --phase: orangered;
+}
+
+.phase4 #timeBar {
+    --phase: crimson;
+}
+.phase5 #timeBar {
+    --phase: magenta;
 }
 
 .skull {
@@ -474,9 +674,9 @@ button:hover {
     padding: 6px 0;
 }
 
-/* .timeBarPip:nth-child(3n+2) {
+.timeBarPip:nth-child(3n+2) {
     border-left: 4px solid rgba(100,50,50,1);
-} */
+}
 
 .timeBarPip:nth-child(2) {
     border: none;
